@@ -23,16 +23,17 @@ git svn clone -T trunk -A authors.txt --no-metadata file://$svnrepo $temp
 
 cd $temp
 
+git push file://$(realpath ../$bare) master
+
+# List branches
 branches=(anelastic reform-thermodynamics)
 
+# Fetch branches
 svn_branches=(${branches[@]/%/-branch})
 git config --add svn-remote.svn.branches \
   "branches/{$(IFS=,; echo "${svn_branches[*]}")}:refs/remotes/origin/*"
-
 git svn fetch
 
-# Push trunk
-git push file://$(realpath ../$bare) master
 # Push branches
 for branch in ${branches[@]}
 do
